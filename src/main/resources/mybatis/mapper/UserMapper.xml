@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mypandora.springboot.modular.system.mapper.UserMapper">
+    <resultMap id="userMap" type="user">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
+        <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="baseColumns">
+        ${alias}
+        .id,
+        ${alias}
+        .
+        username,
+        ${alias}
+        .
+        nickname,
+        ${alias}
+        .
+        real_name,
+        ${alias}
+        .
+        status,
+        ${alias}
+        .
+        avatar,
+        ${alias}
+        .
+        email,
+        ${alias}
+        .
+        phone,
+        ${alias}
+        .
+        mobile,
+        ${alias}
+        .
+        sex,
+        ${alias}
+        .
+        last_login_time,
+        ${alias}
+        .
+        create_time,
+        ${alias}
+        .
+        update_time
+    </sql>
+
+    <select id="pageUser" resultMap="userMap">
+        SELECT
+        <include refid="baseColumns">
+            <property name="alias" value="u"/>
+        </include>
+        FROM sys_department_user du
+        JOIN sys_user u on du.user_id = u.id
+        WHERE 1 = 1
+        AND du.department_id = #{departmentId}
+        <if test="user.username!=null">
+            AND u.username = #{user.username}
+        </if>
+        <if test="user.phone!=null">
+            AND u.phone = #{user.phone}
+        </if>
+        <if test="user.mobile!=null">
+            AND u.mobile = #{user.mobile}
+        </if>
+        <if test="user.sex!=null">
+            AND u.sex = #{user.sex}
+        </if>
+        <if test="user.status!=null">
+            AND u.status = #{user.status}
+        </if>
+    </select>
+
+</mapper>

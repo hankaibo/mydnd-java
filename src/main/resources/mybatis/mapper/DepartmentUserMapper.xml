@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mypandora.springboot.modular.system.mapper.DepartmentUserMapper">
+
+    <select id="countUserByDepartmentId" resultType="int" parameterType="long">
+        SELECT count(*)
+        FROM sys_department_user t
+        WHERE t.department_id in (
+            SELECT t.id
+            FROM sys_department t
+            WHERE 1 = 1
+        <![CDATA[
+              AND t.lft >= (
+                SELECT s.lft
+                FROM sys_department s
+                WHERE s.id = #{id})
+              AND t.rgt <= (
+                SELECT s.rgt
+                FROM sys_department s
+                WHERE s.id = #{id})
+            ]]>)
+    </select>
+
+    <select id="existsUserByUserId" resultType="int" parameterType="long">
+        SELECT 1
+        FROM sys_department_user du
+        WHERE du.user_id = #{id}
+        LIMIT 1
+    </select>
+
+</mapper>
